@@ -1,5 +1,5 @@
 const apiKey = "dcaebebf1342d25851db4b075b0be17e";
-const movieTitle = "Nun";
+const movieTitle = "The Nun";
 
 // search for movies details
 fetch(
@@ -28,5 +28,29 @@ fetch(
   options
 )
   .then((response) => response.json())
-  .then((response) => console.log(response))
+  .then((response) => displayTopMovies(response))
   .catch((err) => console.error(err));
+
+const displayTopMovies = (data) => {
+  const movieContainer = document.getElementById("top-movies");
+  // console.log(movies.results);
+  const movies = data.results;
+  movies.forEach((movie) => {
+    console.log(movie);
+    const movieCard = document.createElement("div");
+    movieCard.innerHTML = `
+<div class="card bg-[#50727B] w-80  shadow-xl overflow-hidden">
+  <figure>
+    <img
+      src="https://image.tmdb.org/t/p/w400${movie.backdrop_path}"
+      alt="Shoes" />
+  </figure>
+  <div class="p-4">
+    <h2 class="text-lg font-semibold">${movie.title}</h2>
+    <p>Release Date: ${movie.release_date}</p>
+  </div>
+</div>
+ `;
+    movieContainer.appendChild(movieCard);
+  });
+};
