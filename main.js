@@ -65,7 +65,7 @@ const displayTopMovies = (data, isShowAll) => {
     let voteAvg = movie.vote_average.toFixed(2);
     const movieCard = document.createElement("div");
     movieCard.innerHTML = `
-<div class="card bg-[#50727B] w-80  shadow-xl indicator ">
+<div class="card bg-[#50727B] w-80  shadow-xl indicator p-2">
 <span class="indicator-item indicator-bottom indicator-start ml-6 badge badge-success ">⭐ ${voteAvg}</span>
   <figure>
     <img
