@@ -37,19 +37,28 @@ const options = {
 };
 
 // top rated movies list api
-fetch(
-  "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
-  options
-)
-  .then((response) => response.json())
-  .then((response) => displayTopMovies(response))
-  .catch((err) => console.error(err));
-
-const displayTopMovies = (data) => {
+const topMovies = (isShowAll) => {
+  fetch(
+    "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
+    options
+  )
+    .then((response) => response.json())
+    .then((response) => displayTopMovies(response, isShowAll))
+    .catch((err) => console.error(err));
+};
+// display top movies
+const displayTopMovies = (data, isShowAll) => {
   const movieContainer = document.getElementById("top-movies");
-  // console.log(movies);
   let movies = data.results;
-  movies = movies.slice(0, 6);
+  const showAll = document.getElementById("showAll-button");
+  if (movies.length > 6 && !isShowAll) {
+    showAll.classList.remove("hidden");
+  } else {
+    showAll.classList.add("hidden");
+  }
+  if (!isShowAll) {
+    movies = movies.slice(0, 6);
+  }
 
   movies.forEach((movie) => {
     // console.log(movie);
@@ -90,16 +99,16 @@ const displayMovie = (movie) => {
   <figure>
     <img
     class="w-full"
-      src="https://image.tmdb.org/t/p/w400/${movie.poster_path}"
+      src="https://image.tmdb.org/t/p/w400/${movie?.poster_path}"
       alt="Album" />
   </figure>
   <div class="card-body ">
-    <h2 class="text-center text-3xl">${movie.title}</h2>
-    <h4>overview: ${movie.overview}</h4>
-    <h4>Release Date: ${movie.release_date}</h4>
-    <h4>Rating: ${movie.vote_average.toFixed(2)}</h4>
-    <h4>Total vote: ${movie.vote_count}</h4>
-    <h4>language: ${movie.original_language.toUpperCase()}</h4>
+    <h2 class="text-center text-3xl">${movie?.title}</h2>
+    <h4>overview: ${movie?.overview}</h4>
+    <h4>Release Date: ${movie?.release_date}</h4>
+    <h4>Rating: ${movie?.vote_average.toFixed(2)}/10</h4>
+    <h4>Total vote: ${movie?.vote_count}</h4>
+    <h4>language: ${movie?.original_language.toUpperCase()}</h4>
   </div>
 </div>
 
@@ -107,3 +116,9 @@ const displayMovie = (movie) => {
   resultContainer.appendChild(movieCard);
   console.log(movie);
 };
+
+const handleShowAll = () => {
+  topMovies(true);
+};
+
+topMovies();
